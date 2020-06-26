@@ -1,0 +1,12 @@
+{
+  "name": "rn-flash-cards",
+  "displayName": "rn-flash-cards",
+  "expo": {
+    "name": "rn-flash-cards",
+    "slug": "rn-flash-cards",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
