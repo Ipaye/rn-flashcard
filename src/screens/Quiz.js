@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 
-export default function Quiz() {
+export default function Quiz(props) {
   return (
     <View style={styles.container}>
       <Text>Quiz View </Text>
