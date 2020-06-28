@@ -5,6 +5,8 @@ import { StatusBar } from 'expo-status-bar'
 import { NavigationContainer, DrawerActions } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 import { Feather } from '@expo/vector-icons'
 
 import CreateCard from './src/screens/CreateCard'
@@ -12,6 +14,7 @@ import CreateDeck from './src/screens/CreateDeck'
 import Decks from './src/screens/Deck'
 import DeckDetail from './src/screens/DeckDetail'
 import Quiz from './src/screens/Quiz'
+import reducer from './src/reducers'
 
 const Drawer = createDrawerNavigator()
 const Stacks = createStackNavigator()
@@ -23,7 +26,7 @@ class App extends React.Component {
         name="Home"
         children={this.createDrawer}
         options={({ navigation }) => ({
-          title: 'React Navigation',
+          title: 'Flash Card',
           headerLeft: () => (
             <Feather
               onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -77,10 +80,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <>
+      <Provider store={createStore(reducer)}>
         <StatusBar style="auto" />
         <NavigationContainer>{this.createHomeStack()}</NavigationContainer>
-      </>
+      </Provider>
     )
   }
 }
