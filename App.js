@@ -38,21 +38,21 @@ class App extends React.Component {
         name="Detail"
         component={DeckDetail}
         options={{
-          title: 'Detail Screen',
+          title: 'Deck Details',
         }}
       />
       <Stacks.Screen
         name="Quiz"
         component={Quiz}
         options={{
-          title: 'Quiz Screen',
+          title: 'Quiz',
         }}
       />
       <Stacks.Screen
         name="CreateCard"
         component={CreateCard}
         options={{
-          title: 'Card Screen',
+          title: 'Create Card',
         }}
       />
     </Stacks.Navigator>
