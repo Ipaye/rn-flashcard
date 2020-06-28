@@ -1,18 +1,28 @@
 import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 
-import { fetchDeckInformations } from '../utils/api'
+import { getDecks } from '../utils/api'
 import DeckItem from '../components/Deckitem'
 
 class Decks extends React.Component {
   async componentDidMount() {
+    this.fetchDecks()
+  }
+
+  fetchDecks = async () => {
     try {
-      const decks = await fetchDeckInformations()
+      console.log('here :>> ')
+      const decks = await getDecks()
       console.log('decks :>> ', decks)
       this.setState({ decks: decks })
     } catch (error) {
-      console.log('Errro fetching data :>> ', error)
+      console.log('Error fetching data :>> ', error)
     }
+  }
+
+  async componentDidUpdate() {
+    console.log('run once')
+    //   // this.fetchDecks()
   }
 
   state = {
@@ -27,9 +37,11 @@ class Decks extends React.Component {
           <Text style={styles.PageHeading}>All Decks </Text>
         </View>
 
-        {Object.keys(decks).map((deck, index) => (
-          <DeckItem {...this.props} deckInfo={decks[deck]} key={index} />
-        ))}
+        {Object.keys(decks)
+          .reverse()
+          .map((deck, index) => (
+            <DeckItem {...this.props} deckInfo={decks[deck]} key={index} />
+          ))}
       </SafeAreaView>
     )
   }

@@ -9,10 +9,16 @@ export default function DeckDetail(props) {
       <Text style={styles.deckname}>Current Deck: {state.title} </Text>
       <Text style={styles.deckdetails}>Cards Available: {state.questions.length} </Text>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('Quiz')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => props.navigation.navigate('Quiz', { title: state.title })}
+        >
           <Text style={styles.buttonText}>Start Quiz</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('CreateCard')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => props.navigation.navigate('CreateCard', { title: state.title })}
+        >
           <Text style={styles.buttonText}>Create card</Text>
         </TouchableOpacity>
       </View>
