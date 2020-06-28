@@ -1,36 +1,42 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 
-export default function Decks(props) {
-  const navigateToDetailsPage = () => {
-    console.log('pross :>> ', props)
-    props.navigation.navigate('Detail')
+import { fetchDeckInformations } from '../utils/api'
+import DeckItem from '../components/Deckitem'
+
+class Decks extends React.Component {
+  async componentDidMount() {
+    try {
+      const decks = await fetchDeckInformations()
+      console.log('decks :>> ', decks)
+      this.setState({ decks: decks })
+    } catch (error) {
+      console.log('Errro fetching data :>> ', error)
+    }
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.PageHeading}>All Decks </Text>
-      </View>
+  state = {
+    decks: {},
+  }
 
-      <ScrollView>
-        <TouchableOpacity onPress={navigateToDetailsPage} style={styles.deckItem}>
-          <Image source={require('../assets/1.png')} style={styles.deckIcon} />
-          <View style={styles.deckDescription}>
-            <Text style={styles.deckTitle}>Jacscript Deck</Text>
-            <Text style={styles.deckSubtitle}>▶ 18 cards</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
+  render() {
+    const { decks } = this.state
+    return (
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={styles.PageHeading}>All Decks </Text>
+        </View>
 
-      {/* End of scroll view */}
-    </SafeAreaView>
-  )
+        {Object.keys(decks).map((deck, index) => (
+          <DeckItem {...this.props} deckInfo={decks[deck]} key={index} />
+        ))}
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#f7f7f7',
     padding: 20,
   },
@@ -39,44 +45,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
   },
-
-  deckItem: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    height: 100,
-    alignItems: 'center',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 20,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  deckIcon: {
-    height: 70,
-    width: 70,
-    marginRight: 10,
-  },
-
-  deckDescription: {
-    alignSelf: 'flex-start',
-    marginTop: 8,
-  },
-  deckTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'blue',
-  },
-  deckSubtitle: {
-    fontSize: 18,
-    marginTop: 3,
-    color: 'grey',
-  },
 })
+
+export default Decks

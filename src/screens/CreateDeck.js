@@ -1,36 +1,53 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  Text,
+  Platform,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native'
 
-export default function Decks(props) {
-  const navigateToDetailsPage = () => {
-    console.log('pross :>> ', props)
-    props.navigation.navigate('Detail')
+class Decks extends React.Component {
+  navigateToDetailsPage = () => {
+    console.log('pross :>> ', this.props)
+    this.props.navigation.navigate('Detail')
   }
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={styles.PageHeading}>Creat a Decks </Text>
+        </View>
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.PageHeading}>Creat a Decks </Text>
-      </View>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+              <View>
+                <Text style={styles.header}>Deck Name</Text>
+                <TextInput placeholder="Enter the name of the deck" style={styles.textInput} />
+              </View>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => null}>
+                  <Text style={styles.buttonText}> Create Deck</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
 
-      <ScrollView>
-        <TouchableOpacity onPress={navigateToDetailsPage} style={styles.deckItem}>
-          <Image source={require('../assets/1.png')} style={styles.deckIcon} />
-          <View style={styles.deckDescription}>
-            <Text style={styles.deckTitle}>Jacscript Deck</Text>
-            <Text style={styles.deckSubtitle}>▶ 18 cards</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* End of scroll view */}
-    </SafeAreaView>
-  )
+        {/* End of scroll view */}
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#f7f7f7',
     padding: 20,
   },
@@ -39,44 +56,28 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
   },
-
-  deckItem: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    height: 100,
-    alignItems: 'center',
-    padding: 10,
-    borderRadius: 5,
+  inner: {
+    justifyContent: 'center',
+  },
+  textInput: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
     marginBottom: 20,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
   },
-  deckIcon: {
-    height: 70,
-    width: 70,
-    marginRight: 10,
+  button: {
+    flex: 1,
+    backgroundColor: 'black',
+    marginBottom: 10,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-
-  deckDescription: {
-    alignSelf: 'flex-start',
-    marginTop: 8,
-  },
-  deckTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'blue',
-  },
-  deckSubtitle: {
+  buttonText: {
+    color: 'white',
     fontSize: 18,
-    marginTop: 3,
-    color: 'grey',
   },
 })
+
+export default Decks
