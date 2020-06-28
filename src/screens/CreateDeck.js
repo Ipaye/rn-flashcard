@@ -11,13 +11,45 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native'
+import { saveDeckTitle, getDecks } from '../utils/api'
 
 class Decks extends React.Component {
-  navigateToDetailsPage = () => {
-    console.log('pross :>> ', this.props)
-    this.props.navigation.navigate('Detail')
+  state = {
+    deck: '',
   }
+
+  handleChange = (newValue) => {
+    this.setState({ deck: newValue })
+  }
+
+  handleSubmit = async () => {
+    const { deck } = this.state
+    let newDeck = {
+      [deck]: {
+        title: deck,
+        questions: [],
+      },
+    }
+    try {
+      await createDeck(newDeck)
+      let newResult = await saveDeckTitle()
+      if (newResult) {
+        this.props.navigation.navigate('Decks', { state: 'new' })
+      }
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
+  }
+
   render() {
+    const { deck } = this.state
+    let disabled
+    if (!deck) {
+      disabled = true
+    } else {
+      disabled = false
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View>
@@ -29,10 +61,18 @@ class Decks extends React.Component {
             <View style={styles.inner}>
               <View>
                 <Text style={styles.header}>Deck Name</Text>
-                <TextInput placeholder="Enter the name of the deck" style={styles.textInput} />
+                <TextInput
+                  onChangeText={this.handleChange}
+                  placeholder="Enter the name of the deck"
+                  style={styles.textInput}
+                />
               </View>
               <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => null}>
+                <TouchableOpacity
+                  disabled={disabled}
+                  style={[disabled ? styles.disabled : styles.button]}
+                  onPress={this.handleSubmit}
+                >
                   <Text style={styles.buttonText}> Create Deck</Text>
                 </TouchableOpacity>
               </View>
@@ -69,6 +109,14 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     backgroundColor: 'black',
+    marginBottom: 10,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  disabled: {
+    flex: 1,
+    backgroundColor: 'grey',
     marginBottom: 10,
     padding: 20,
     justifyContent: 'center',
