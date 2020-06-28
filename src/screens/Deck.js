@@ -1,8 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
+import { connect } from 'react-redux'
 
 import { getDecks } from '../utils/api'
 import DeckItem from '../components/Deckitem'
+
+import { receiveDecks } from '../actions'
 
 class Decks extends React.Component {
   async componentDidMount() {
@@ -10,19 +13,14 @@ class Decks extends React.Component {
   }
 
   fetchDecks = async () => {
+    const { dispatch } = this.props
     try {
-      console.log('here :>> ')
       const decks = await getDecks()
-      console.log('decks :>> ', decks)
+      dispatch(receiveDecks(decks))
       this.setState({ decks: decks })
     } catch (error) {
       console.log('Error fetching data :>> ', error)
     }
-  }
-
-  async componentDidUpdate() {
-    console.log('run once')
-    //   // this.fetchDecks()
   }
 
   state = {
@@ -30,18 +28,19 @@ class Decks extends React.Component {
   }
 
   render() {
-    const { decks } = this.state
+    const { decks } = this.props
     return (
       <SafeAreaView style={styles.container}>
         <View>
           <Text style={styles.PageHeading}>All Decks </Text>
         </View>
-
-        {Object.keys(decks)
-          .reverse()
-          .map((deck, index) => (
-            <DeckItem {...this.props} deckInfo={decks[deck]} key={index} />
-          ))}
+        <ScrollView style={styles.scrolling}>
+          {Object.keys(decks)
+            .reverse()
+            .map((deck, index) => (
+              <DeckItem {...this.props} deckInfo={decks[deck]} key={index} />
+            ))}
+        </ScrollView>
       </SafeAreaView>
     )
   }
@@ -57,6 +56,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
   },
+  scrolling: {
+    marginBottom: 20,
+  },
 })
 
-export default Decks
+function mapStateToProps(decks) {
+  return {
+    decks,
+  }
+}
+
+export default connect(mapStateToProps)(Decks)

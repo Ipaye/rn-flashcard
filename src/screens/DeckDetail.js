@@ -1,23 +1,24 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 
-export default function DeckDetail(props) {
-  const { state } = props.route.params
-  console.log('props in details :>> ', props)
+import { connect } from 'react-redux'
+
+function DeckDetail(props) {
+  const { currentDeck } = props
   return (
     <View style={styles.container}>
-      <Text style={styles.deckname}>Current Deck: {state.title} </Text>
-      <Text style={styles.deckdetails}>Cards Available: {state.questions.length} </Text>
+      <Text style={styles.deckname}>Current Deck: {currentDeck.title} </Text>
+      <Text style={styles.deckdetails}>Cards Available: {currentDeck.questions.length} </Text>
       <View style={styles.buttons}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('Quiz', { title: state.title })}
+          onPress={() => props.navigation.navigate('Quiz', { title: currentDeck.title })}
         >
           <Text style={styles.buttonText}>Start Quiz</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('CreateCard', { title: state.title })}
+          onPress={() => props.navigation.navigate('CreateCard', { title: currentDeck.title })}
         >
           <Text style={styles.buttonText}>Create card</Text>
         </TouchableOpacity>
@@ -63,3 +64,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 })
+
+function mapStateToProps(decks, props) {
+  const { state } = props.route.params
+  let deck = state.trim()
+  let currentDeck = decks[deck]
+
+  return {
+    currentDeck,
+  }
+}
+
+export default connect(mapStateToProps)(DeckDetail)

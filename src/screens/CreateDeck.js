@@ -11,9 +11,11 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native'
+import { createDeck } from '../actions'
+import { connect } from 'react-redux'
 import { saveDeckTitle, getDecks } from '../utils/api'
 
-class Decks extends React.Component {
+class CreateDecks extends React.Component {
   state = {
     deck: '',
   }
@@ -23,6 +25,7 @@ class Decks extends React.Component {
   }
 
   handleSubmit = async () => {
+    const { dispatch } = this.props
     const { deck } = this.state
     let newDeck = {
       [deck]: {
@@ -31,10 +34,12 @@ class Decks extends React.Component {
       },
     }
     try {
-      await createDeck(newDeck)
-      let newResult = await saveDeckTitle()
+      await saveDeckTitle(newDeck)
+      let newResult = await getDecks()
+      dispatch(createDeck(newDeck))
+      this.setState({ deck: '' })
       if (newResult) {
-        this.props.navigation.navigate('Decks', { state: 'new' })
+        this.props.navigation.navigate('Detail', { state: deck })
       }
     } catch (error) {
       console.log('error :>> ', error)
@@ -63,6 +68,7 @@ class Decks extends React.Component {
                 <Text style={styles.header}>Deck Name</Text>
                 <TextInput
                   onChangeText={this.handleChange}
+                  value={this.state.deck}
                   placeholder="Enter the name of the deck"
                   style={styles.textInput}
                 />
@@ -128,4 +134,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Decks
+export default connect()(CreateDecks)

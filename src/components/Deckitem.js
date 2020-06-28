@@ -1,22 +1,20 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
 export default function DeckItem(props) {
   const navigateToDetailsPage = () => {
     console.log('pross :>> ', props)
-    props.navigation.navigate('Detail', { state: props.deckInfo })
+    props.navigation.navigate('Detail', { state: props.deckInfo.title })
   }
 
   return (
-    <ScrollView>
-      <TouchableOpacity onPress={navigateToDetailsPage} style={styles.deckItem}>
-        <Image source={require('../assets/1.png')} style={styles.deckIcon} />
-        <View style={styles.deckDescription}>
-          <Text style={styles.deckTitle}>{props.deckInfo.title}</Text>
-          <Text style={styles.deckSubtitle}>▶ {props.deckInfo.questions.length} cards</Text>
-        </View>
-      </TouchableOpacity>
-    </ScrollView>
+    <TouchableOpacity onPress={navigateToDetailsPage} style={styles.deckItem}>
+      <Image source={require('../assets/1.png')} style={styles.deckIcon} />
+      <View style={styles.deckDescription}>
+        <Text style={styles.deckTitle}>{props.deckInfo.title}</Text>
+        <Text style={styles.deckSubtitle}>▶ {props.deckInfo.questions.length} cards</Text>
+      </View>
+    </TouchableOpacity>
   )
 }
 

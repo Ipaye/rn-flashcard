@@ -10,6 +10,9 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native'
+import { connect } from 'react-redux'
+
+import { addCardToDeck as updateCard } from '../actions'
 import { addCardToDeck, getDecks } from '../utils/api'
 
 class CreateCard extends React.Component {
@@ -27,6 +30,7 @@ class CreateCard extends React.Component {
   }
 
   handleSubmit = async () => {
+    const { dispatch } = this.props
     const { title } = this.props.route.params
     const { question, answer } = this.state
 
@@ -39,6 +43,8 @@ class CreateCard extends React.Component {
 
     try {
       await addCardToDeck(title, questionData)
+      this.setState({ question: '', answer: '' })
+      dispatch(updateCard(title, questionData))
       this.props.navigation.pop()
     } catch (error) {
       console.log('error updating deck :>> ', error)
@@ -62,14 +68,16 @@ class CreateCard extends React.Component {
               <Text style={styles.header}>Question</Text>
               <TextInput
                 onChangeText={this.handleQuestionChange}
+                value={this.state.question}
                 placeholder="Enter the question"
                 style={styles.textInput}
               />
             </View>
             <View>
-              <Text style={styles.header}>Card Name</Text>
+              <Text style={styles.header}>Answer</Text>
               <TextInput
                 onChangeText={this.handleaAnswerChange}
+                value={this.state.answer}
                 placeholder="Enter the answer to the question"
                 style={styles.textInput}
               />
@@ -129,4 +137,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default CreateCard
+export default connect()(CreateCard)
