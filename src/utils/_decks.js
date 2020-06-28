@@ -31,9 +31,9 @@ function setDummyData() {
   }
 
   AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(dummyDecks))
-  return dummyData
+  return dummyDecks
 }
 
 export function formatDecks(APIDeckResponse) {
-  return results === null ? setDummyData() : JSON.parse(APIDeckResponse)
+  return APIDeckResponse === null ? setDummyData() : JSON.parse(APIDeckResponse)
 }
