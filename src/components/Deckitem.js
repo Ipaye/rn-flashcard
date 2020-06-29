@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
 export default function DeckItem(props) {
   const navigateToDetailsPage = () => {
-    console.log('pross :>> ', props)
     props.navigation.navigate('Detail', { state: props.deckInfo.title })
   }
 
