@@ -1,6 +1,5 @@
 //  Utilities for backfilling the calendar.
 import { AsyncStorage } from 'react-native'
-import { getMetricMetaInfo, timeToString } from './helpers'
 
 export const DECKS_STORAGE_KEY = 'FlashCard:decks'
 
