@@ -5,13 +5,20 @@ import { connect } from 'react-redux'
 
 function DeckDetail(props) {
   const { currentDeck } = props
+  let disabled
+  if (currentDeck.questions.length === 0) {
+    disabled = true
+  } else {
+    disabled = false
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.deckname}>Current Deck: {currentDeck.title} </Text>
       <Text style={styles.deckdetails}>Cards Available: {currentDeck.questions.length} </Text>
       <View style={styles.buttons}>
         <TouchableOpacity
-          style={styles.button}
+          disabled={disabled}
+          style={disabled ? styles.disabled : styles.button}
           onPress={() => props.navigation.navigate('Quiz', { state: currentDeck.title })}
         >
           <Text style={styles.buttonText}>Start Quiz</Text>
@@ -48,6 +55,14 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     justifyContent: 'space-between',
     height: 40,
+  },
+  disabled: {
+    flex: 1,
+    backgroundColor: 'grey',
+    marginBottom: 10,
+    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     flex: 1,
