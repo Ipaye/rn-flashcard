@@ -16,10 +16,15 @@ import DeckDetail from './src/screens/DeckDetail'
 import Quiz from './src/screens/Quiz'
 import reducer from './src/reducers'
 
+import { setLocalNotification } from './src/utils/helpers'
+
 const Drawer = createDrawerNavigator()
 const Stacks = createStackNavigator()
 
 class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   createHomeStack = () => (
     <Stacks.Navigator>
       <Stacks.Screen

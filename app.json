@@ -5,8 +5,9 @@
     "name": "rn-flash-cards",
     "slug": "rn-flash-cards",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "android": {
+      "useNextNotificationsApi": true
+    },
+    "assetBundlePatterns": ["**/*"]
   }
 }
