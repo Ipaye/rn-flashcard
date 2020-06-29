@@ -12,7 +12,7 @@ function DeckDetail(props) {
       <View style={styles.buttons}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('Quiz', { title: currentDeck.title })}
+          onPress={() => props.navigation.navigate('Quiz', { state: currentDeck.title })}
         >
           <Text style={styles.buttonText}>Start Quiz</Text>
         </TouchableOpacity>
